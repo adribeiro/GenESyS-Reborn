@@ -26,7 +26,7 @@ std::list<FactorOrInteractionContribution*>* ExperimentDesign_AdRibeiro_DanielBo
 	return _contributions;
 }
 
-bool ExperimentDesign_AdRibeiro_DanielBoso::generate2krScenarioExperiments(){
+bool ExperimentDesign_AdRibeiro_DanielBoso::generate2krScenarioExperiments() {
     List<SimulationControl*>* _controls = _processAnalyser->getControls();
 
     int k = _controls->size();
@@ -43,7 +43,7 @@ bool ExperimentDesign_AdRibeiro_DanielBoso::generate2krScenarioExperiments(){
         int matrice[potencia][k];
         generateMatrice(*matrice,k);
         
-        for(std::list<SimulationControl*>::iterator it=_controls->find(_controls->first()); it != _controls->find(_controls->last()); ++it){
+        for(std::list<SimulationControl*>::iterator it=_controls->find(_controls->first()); it != _controls->find(_controls->last()); ++it) {
             x = *it;
             aux->setControlValue(x,matrice[i][cont]);
             cont++;
@@ -56,7 +56,20 @@ bool ExperimentDesign_AdRibeiro_DanielBoso::generate2krScenarioExperiments(){
     return true;
 }
 void ExperimentDesign_AdRibeiro_DanielBoso::generateMatrice(int* matrice,int k){
+    int column = 0;
+    int kSquared = pow(k, 2);
+    int variationFactorColumn = kSquared / 2;
+    bool factor = true;
 
+    for(; variationFactorColumn >= 1; variationFactorColumn/=2) {
+    
+        for(int i = 0; i < kSquared; i++) {
+            if(i % variationFactorColumn == 0) {factor = !factor;}
+            matrice[k * i + column] = factor;   
+        }
+        column++;
+    }
+    
 }
 
 bool ExperimentDesign_AdRibeiro_DanielBoso::calculateContributionAndCoefficients(){
