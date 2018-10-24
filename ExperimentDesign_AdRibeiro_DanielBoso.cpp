@@ -55,17 +55,18 @@ bool ExperimentDesign_AdRibeiro_DanielBoso::generate2krScenarioExperiments() {
     
     return true;
 }
-void ExperimentDesign_AdRibeiro_DanielBoso::generateMatrice(int* matrice,int k){
+void ExperimentDesign_AdRibeiro_DanielBoso::generateMatrice(int* matrice, int k){
     int column = 0;
     int kSquared = pow(k, 2);
     int variationFactorColumn = kSquared / 2;
-    bool factor = true;
+    int factor = -1;
 
     for(; variationFactorColumn >= 1; variationFactorColumn/=2) {
     
         for(int i = 0; i < kSquared; i++) {
-            if(i % variationFactorColumn == 0) {factor = !factor;}
-            matrice[k * i + column] = factor;   
+
+            if(i % variationFactorColumn == 0) {factor *= -1;}
+                matrice[k * i + column] = factor;   
         }
         column++;
     }
